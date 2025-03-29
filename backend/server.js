@@ -3,9 +3,16 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
+console.log("MONGO_URI:", process.env.MONGO_URI);
+console.log("PORT:", process.env.PORT);
+
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+  }));
 app.use(express.json());
 
 app.get('/', (req, res) => {
