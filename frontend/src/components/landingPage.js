@@ -11,10 +11,47 @@ export default function WeatherLandingPage() {
   }, []);
 
   const fetchWeather = async () => {
-    if (!city) return;
     try {
-      const response = await axios.get(`http://localhost:5000/weather?city=${city}`);
-      setWeather(response.data);
+      let url = "";
+      if (city) {
+        url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`;
+      } else {
+        if (!navigator.geolocation) {
+          alert("Geolocation not supported");
+          return;
+        }
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const { latitude, longitude } = position.coords;
+          url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`;
+          try {
+            const response = await axios.get(url);
+            const data = response.data;
+            setWeather({
+              city: data.name,
+              country: data.sys.country,
+              description: data.weather[0].description,
+              temperature: data.main.temp,
+              humidity: data.main.humidity,
+              windSpeed: data.wind.speed,
+            });
+            fetchHistory();
+          } catch (error) {
+            alert("Weather data fetch error");
+          }
+        });
+        return;
+      }
+
+      const response = await axios.get(url);
+      const data = response.data;
+      setWeather({
+        city: data.name,
+        country: data.sys.country,
+        description: data.weather[0].description,
+        temperature: data.main.temp,
+        humidity: data.main.humidity,
+        windSpeed: data.wind.speed,
+      });
       fetchHistory();
     } catch (error) {
       alert("City not found or API error");
