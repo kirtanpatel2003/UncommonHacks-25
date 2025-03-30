@@ -9,7 +9,6 @@ export default function WeatherLandingPage() {
   const [hourlyData, setHourlyData] = useState([]); // Store forecast data here
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState("temperature");
 
   // Define the sign-in handler to redirect to your backend's Auth0 login endpoint
   const handleSignIn = () => {
@@ -198,18 +197,6 @@ export default function WeatherLandingPage() {
           </div>
         </div>
       )}
-
-      {/* Single Temperature tab */}
-      <div className="tabs-container">
-        <div className="tab active">Temperature</div>
-      </div>
-
-      <div className="temperature-map-container">
-        <div className="temperature-map-placeholder">
-          <h3>Temperature Map</h3>
-          <p>Map data will be loaded here</p>
-        </div>
-      </div>
 
       {/* Render the Recharts line graph with hourly forecast data */}
       {hourlyData.length > 0 && (
