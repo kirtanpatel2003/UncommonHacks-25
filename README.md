@@ -60,51 +60,63 @@ Ensure you have the following installed:
  - Arduino Environment: For premium hardware integration.
  - MongoDB: For local or cloud-based database management.
 
- Setup and Installation
-Prerequisites
-Before you begin, ensure you have the following installed on your system:
-
-Node.js (which comes with npm)
-Python (version 3.x recommended)
-Git (optional, for cloning the repository)
 Cloning the Repository
-To get started with the AgriMitra project, clone the repository to your local machine by running the following command in your terminal:
+Clone the WeatherGenie repository to your local machine:
 
-git clone https://github.com/yourusername/agrimitra.git
-cd agrimitra
+bash
+Copy
+git clone https://github.com/yourusername/weathergenie.us.git
+cd weathergenie.us
 Setting Up the Backend
 Navigate to the backend directory:
 
-  cd backend
+bash
+Copy
+cd backend
 Create a virtual environment:
 
-  python -m venv env
+bash
+Copy
+python -m venv env
 Activate the virtual environment:
 
 On Windows:
 
-  .\env\Scripts\activate
+bash
+Copy
+.\env\Scripts\activate
 On MacOS/Linux:
 
-  source env/bin/activate
+bash
+Copy
+source env/bin/activate
 Install the required Python packages:
 
-  pip install -r requirements.txt
+bash
+Copy
+pip install -r requirements.txt
 Start the Flask server:
 
-  flask run
+bash
+Copy
+flask run
 Setting Up the Frontend
+Navigate to the frontend directory:
 
-Navigate to the frontend directory from the root of the project:
+bash
+Copy
+cd ../frontend
+Install npm packages:
 
-  cd frontend
-Install the necessary npm packages:
-
-  npm install
+bash
+Copy
+npm install
 Start the React development server:
 
-  npm start
-
+bash
+Copy
+npm start
+The application will open in
 ## Additional Configuration
   - API Keys: Securely configure your API keys for OpenWeather and any other external services in your environment variables or configuration files.
 
