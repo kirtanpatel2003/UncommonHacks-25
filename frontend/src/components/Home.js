@@ -217,7 +217,13 @@ export default function WeatherDashboard() {
             >
               Device
             </li>
-            <li className="user-profile">My Account</li>
+            <li className="user-profile" onClick={() => {
+              localStorage.removeItem("email")
+              localStorage.removeItem("arduinoId")
+              window.location.href = "/"
+            }}>
+              Logout
+            </li>
           </ul>
         </nav>
       </header>
