@@ -16,7 +16,8 @@ export default function WeatherLandingPage() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post("http://localhost:5012/api/login", { email, password })
+      // const res = await axios.post("http://localhost:5012/api/login", { email, password })
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/login`, { email, password })
   
       console.log("Response from backend:", res.data) // Add this log
   

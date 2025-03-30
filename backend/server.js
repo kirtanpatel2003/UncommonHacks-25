@@ -5,8 +5,25 @@ require('dotenv').config()
 
 const app = express()
 
+// app.use(cors({
+//   origin: 'http://localhost:3000',
+//   methods: ['GET', 'POST'],
+//   credentials: true
+// }))
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://www.weathergenie.us'
+]
+
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
   methods: ['GET', 'POST'],
   credentials: true
 }))
