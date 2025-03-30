@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Heart } from "lucide-react";
@@ -14,7 +15,6 @@ export default function WeatherLandingPage() {
   const handleSignIn = () => {
     window.location.href = "http://localhost:2000/login";
   };
-  
 
   useEffect(() => {
     fetchWeather();
@@ -98,13 +98,13 @@ export default function WeatherLandingPage() {
   // Fetch the 5 day / 3 hour forecast (approximately 40 data points)
   const fetchHourlyForecast = async (lat, lon) => {
     try {
-      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`;
-      console.log("Forecast URL:", forecastUrl);
-      const forecastRes = await axios.get(forecastUrl);
-      console.log("Fetched forecast data:", forecastRes.data);
+      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
+      console.log("Forecast URL:", forecastUrl)
+      const forecastRes = await axios.get(forecastUrl)
+      console.log("Fetched forecast data:", forecastRes.data)
 
-      // The .list array is your 3-hourly forecast
-      setHourlyData(forecastRes.data.list || []);
+      setHourlyData(forecastRes.data.list || [])
+
     } catch (err) {
       console.error("Error fetching hourly forecast:", err);
       setError("Error fetching hourly forecast data");
@@ -114,7 +114,9 @@ export default function WeatherLandingPage() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <div className="logo">WeatherGenie</div>
+      <div className="logo">
+          <img src="/WEATHER.png" alt="WeatherGenie Logo" className="logo-image" />
+        </div>
         <nav className="main-nav">
           <ul>
             <li>Learn More</li>
@@ -198,7 +200,6 @@ export default function WeatherLandingPage() {
         </div>
       )}
 
-      {/* Render the Recharts line graph with hourly forecast data */}
       {hourlyData.length > 0 && (
         <div className="history-chart-container">
           <TemperatureGraph data={hourlyData} />
