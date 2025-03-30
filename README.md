@@ -1,4 +1,4 @@
-# WeatherGenie – Your Ultimate Weather Companion
+# WeatherGenie – Your Personal Genie for Weather Insights
 ## Overview
 WeatherGenie is a comprehensive weather data platform offering two distinct experiences. The free version presents essential weather information based on your device’s location through a sleek landing page, while the premium product takes weather monitoring to the next level. For premium users, we install an Arduino sensor that collects live weather data, which is then analyzed and displayed on a personalized dashboard. Our platform leverages the OpenWeather API for real-time updates and uses advanced machine learning models to predict future weather conditions.
 
