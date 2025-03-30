@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { Heart, Search, Cloud, Droplets, Wind, ThermometerSun, RefreshCw, MapPin } from 'lucide-react'
 import "./home.css"
+import DeviceGraph from "./DeviceGraph"
 import RandomQuote from "./randomQuote"
 
 export default function WeatherDashboard() {
@@ -396,6 +397,12 @@ export default function WeatherDashboard() {
             </div>
           )}
         </>
+      )}
+
+      {activeTab === "device" && (
+        <div className="device-graph-wrapper">
+          <DeviceGraph />
+        </div>
       )}
 
       <footer className="dashboard-footer">
