@@ -20,7 +20,7 @@ import Home from "./components/home"
 function App() {
   return (
     <div className="App">
-      <WeatherLandingPage />
+      {/* <WeatherLandingPage /> */}
       <Home />
     </div>
   )

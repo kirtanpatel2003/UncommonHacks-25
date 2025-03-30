@@ -1,506 +1,893 @@
 /* Reset and Base styles*/
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-      "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+}
+
+/* Primary document styling */
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+/* Main application container - controls overall layout structure */
+.weather-dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Premium subscription indicator styles - adds visual distinction for premium users */
+.weather-dashboard-container.premium {
+  background-color: rgba(20, 20, 30, 0.3);
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(76, 175, 80, 0.1);
+}
+
+/* Header section styles - contains logo, search, and navigation */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* Brand logo container */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Brand logo image sizing */
+.brand-logo-image {
+  height: 150px;
+  width: auto;
+}
+
+/* City search controls container */
+.city-search-container {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  max-width: 400px;
+  position: relative;
+}
+
+/* Style for the city search input field */
+.city-search-input {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+/* Focus state for search input - provides visual feedback */
+.city-search-input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+/* Placeholder text styling for search input */
+.city-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Search button styling - positioned inside the search input */
+.city-search-button {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+/* Hover state for search button - provides visual feedback */
+.city-search-button:hover {
+  color: #4caf50;
+}
+
+/* Disabled state for search button - indicates loading state */
+.city-search-button:disabled {
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+/* Main navigation menu container */
+.navigation-menu ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+/* Individual navigation menu items */
+.navigation-menu li {
+  margin-left: 20px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s, transform 0.2s;
+  position: relative;
+}
+
+/* Active and hover states for navigation items */
+.navigation-menu li:hover,
+.navigation-menu li.active {
+  opacity: 1;
+}
+
+/* Active state with underline indicator */
+.navigation-menu li.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #4caf50;
+  transform: scaleX(1);
+  transition: transform 0.3s ease;
+}
+
+/* Hover state with underline indicator */
+.navigation-menu li:not(.active):hover::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: rgba(76, 175, 80, 0.5);
+  transform: scaleX(0.7);
+  transition: transform 0.3s ease;
+}
+
+/* Special styling for user profile navigation item */
+.navigation-menu li.user-profile {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  opacity: 1;
+}
+
+/* Hover state for user profile navigation item */
+.navigation-menu li.user-profile:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+/* Error notification styling - displays API errors and other issues */
+.error-notification {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: #ff6b6b;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  border-left: 4px solid #ff6b6b;
+  animation: fadeIn 0.5s ease;
+}
+
+/* Loading indicator styling - shows during data fetching */
+.loading-indicator {
+  background-color: rgba(0, 0, 255, 0.1);
+  color: #61dafb;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  animation: fadeIn 0.5s ease;
+}
+
+/* Loading spinner animation */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(97, 218, 251, 0.3);
+  border-radius: 50%;
+  border-top-color: #61dafb;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  
-  /* Primary document styling */
-  body {
-    background-color: #000;
-    color: #fff;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  /* Main application container - controls overall layout structure */
-  .weather-dashboard-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    min-height: 100vh;
-    display: flex;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Replace the current-weather-summary styles in your home.css file with these: */
+
+/* Current weather summary section */
+.current-weather-summary {
+  margin-bottom: 25px;
+}
+
+.current-weather-card {
+  background: linear-gradient(to right, rgba(20, 30, 48, 0.7), rgba(36, 59, 85, 0.7));
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Glass effect overlay */
+.current-weather-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.current-weather-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.location-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.location-icon {
+  color: #4caf50;
+}
+
+.location-name {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.weather-description-badge {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.current-weather-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.weather-primary-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.weather-icon {
+  width: 100px;
+  height: 100px;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+
+.temperature-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.temperature-value {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.feels-like {
+  font-size: 16px;
+  opacity: 0.7;
+  margin-top: 5px;
+}
+
+.weather-metrics {
+  display: flex;
+  gap: 25px;
+}
+
+.weather-metric {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px 15px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.weather-metric:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-3px);
+}
+
+.weather-metric svg {
+  color: #4caf50;
+}
+
+.metric-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-value {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.metric-label {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.current-weather-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.refresh-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.refresh-button:hover {
+  background-color: rgba(76, 175, 80, 0.3);
+  transform: translateY(-2px);
+}
+
+.last-updated {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .current-weather-content {
     flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
   }
   
-  /* Premium subscription indicator styles - adds visual distinction for premium users */
-  .weather-dashboard-container.premium {
-    background-color: rgba(20, 20, 30, 0.3);
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(76, 175, 80, 0.1);
-  }
-  
-  /* Header section styles - contains logo, search, and navigation */
-  .dashboard-header {
-    display: flex;
+  .weather-metrics {
+    width: 100%;
     justify-content: space-between;
+  }
+  
+  .weather-metric {
+    flex: 1;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .current-weather-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .weather-description-badge {
+    align-self: flex-start;
+  }
+  
+  .current-weather-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .last-updated {
+    align-self: flex-end;
+  }
+}
+
+/* Main content area - contains weather metrics and map */
+.weather-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Location header with city name and air quality */
+.location-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Location name styling */
+.location-header h2 {
+  font-size: 24px;
+  position: relative;
+}
+
+.location-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background-color: #4caf50;
+}
+
+/* Air Quality Index badge styling */
+.air-quality-badge {
+  background-color: #ffd700;
+  color: #000;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+/* Air quality metrics grid layout */
+.air-quality-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* Individual air quality metric cards with hover effects */
+.air-quality-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effect for air quality metric cards - adds elevation and highlighting */
+.air-quality-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Different accent colors for each air quality parameter on hover */
+.air-quality-card:nth-child(1):hover {
+  border-left: 4px solid #ff6b6b;
+} /* CO - Carbon Monoxide */
+.air-quality-card:nth-child(2):hover {
+  border-left: 4px solid #4ecdc4;
+} /* NO - Nitric Oxide */
+.air-quality-card:nth-child(3):hover {
+  border-left: 4px solid #ffbe0b;
+} /* NO2 - Nitrogen Dioxide */
+.air-quality-card:nth-child(4):hover {
+  border-left: 4px solid #8ac926;
+} /* O3 - Ozone */
+.air-quality-card:nth-child(5):hover {
+  border-left: 4px solid #a786df;
+} /* SO2 - Sulfur Dioxide */
+.air-quality-card:nth-child(6):hover {
+  border-left: 4px solid #fb5607;
+} /* PM2.5 - Fine Particulate Matter */
+.air-quality-card:nth-child(7):hover {
+  border-left: 4px solid #3a86ff;
+} /* PM10 - Coarse Particulate Matter */
+.air-quality-card:nth-child(8):hover {
+  border-left: 4px solid #ff006e;
+} /* NH3 - Ammonia */
+
+/* Glow effect on hover for air quality cards - adds visual interest */
+.air-quality-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* Show glow effect on hover */
+.air-quality-card:hover::after {
+  opacity: 1;
+}
+
+/* Pollutant label styling */
+.pollutant-label {
+  font-size: 14px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+/* Pollutant value styling - emphasizes the measurement */
+.pollutant-value {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 5px 0;
+  transition: transform 0.3s ease;
+}
+
+/* Measurement unit styling */
+.measurement-unit {
+  font-size: 12px;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+/* Enhanced styles on hover for better readability */
+.air-quality-card:hover .pollutant-label {
+  opacity: 1;
+}
+
+.air-quality-card:hover .pollutant-value {
+  transform: scale(1.05);
+}
+
+.air-quality-card:hover .measurement-unit {
+  opacity: 0.8;
+}
+
+/* Location map container */
+.location-map-container {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+}
+
+/* Placeholder for map when actual map isn't available */
+.location-map-placeholder {
+  background-color: rgba(255, 255, 255, 0.05);
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Map icon styling */
+.map-icon {
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 15px;
+}
+
+/* City label overlay on map placeholder */
+.location-map-city-label {
+  font-size: 24px;
+  font-weight: bold;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+/* Map description text */
+.map-description {
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+/* Forecast toggle button */
+.forecast-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.forecast-toggle-button {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.forecast-toggle-button:hover {
+  background-color: rgba(76, 175, 80, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Weather forecast section styling */
+.forecast-section {
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  margin-top: 20px;
+  animation: fadeIn 0.5s ease;
+}
+
+/* Forecast section header */
+.forecast-section h3 {
+  margin-bottom: 15px;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.forecast-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #4caf50;
+}
+
+/* Container for forecast day cards */
+.forecast-days-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #4caf50 rgba(255, 255, 255, 0.1);
+}
+
+/* Scrollbar styling */
+.forecast-days-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.forecast-days-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.forecast-days-container::-webkit-scrollbar-thumb {
+  background-color: #4caf50;
+  border-radius: 10px;
+}
+
+/* Individual forecast day card */
+.forecast-day-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 15px;
+  min-width: 120px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for forecast day cards */
+.forecast-day-card:hover {
+  transform: translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Date display in forecast card */
+.forecast-day-date {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Time display in forecast card */
+.forecast-day-time {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+/* Forecast weather icon */
+.forecast-icon {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 10px;
+}
+
+/* Temperature display in forecast card */
+.forecast-day-temperature {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+/* Weather description in forecast card */
+.forecast-day-description {
+  font-size: 12px;
+  opacity: 0.7;
+  text-transform: capitalize;
+}
+
+/* Application footer styling */
+.dashboard-footer {
+  margin-top: auto;
+  padding: 15px 0;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Footer text styling */
+.dashboard-footer p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+
+/* Logout link styling */
+.account-logout {
+  color: #4caf50;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Hover state for logout link */
+.account-logout:hover {
+  color: #45a049;
+}
+
+/* Animated heart icon in footer */
+.heart-animation {
+  color: #ff6b6b;
+  animation: heartbeat-pulse 1.5s ease infinite;
+}
+
+/* Heart animation keyframes */
+@keyframes heartbeat-pulse {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Responsive layout adjustments for mobile devices */
+@media (max-width: 768px) {
+  /* Stack main content in a single column on smaller screens */
+  .weather-content {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Single column layout for metrics on smaller screens */
+  .air-quality-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Vertical navigation menu on mobile */
+  .navigation-menu ul {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  /* Adjusted spacing for navigation items on mobile */
+  .navigation-menu li {
+    margin: 5px 0;
+  }
+  
+  /* Smaller logo on mobile for better space utilization */
+  .brand-logo-image {
+    height: 30px;
+  }
+  
+  /* Full-width search on mobile */
+  .city-search-container {
+    order: 3;
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  /* Adjust current weather summary for mobile */
+  .current-weather-summary {
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    text-align: center;
+  }
+  
+  .weather-details {
+    align-items: center;
+  }
+  
+  .location-name {
+    justify-content: center;
+  }
+  
+  .refresh-button {
+    align-self: center;
+  }
+  
+  /* Vertical forecast cards on mobile */
+  .forecast-days-container {
+    flex-direction: column;
     gap: 15px;
   }
   
-  /* Brand logo container */
-  .brand-logo {
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-  
-  /* Brand logo image sizing */
-  .brand-logo-image {
-    height: 150px;
-    width: auto;
-  }
-  
-  /* City search controls container */
-  .city-search-container {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    max-width: 400px;
-    position: relative;
-  }
-  
-  /* Style for the city search input field */
-  .city-search-input {
-    width: 100%;
-    padding: 10px 15px;
-    border-radius: 20px;
-    border: none;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    font-size: 16px;
-    transition: all 0.3s ease;
-  }
-  
-  /* Focus state for search input - provides visual feedback */
-  .city-search-input:focus {
-    outline: none;
-    background-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
-  }
-  
-  /* Placeholder text styling for search input */
-  .city-search-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-  }
-  
-  /* Search button styling - positioned inside the search input */
-  .city-search-button {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.3s ease;
-  }
-  
-  /* Hover state for search button - provides visual feedback */
-  .city-search-button:hover {
-    color: #4caf50;
-  }
-  
-  /* Disabled state for search button - indicates loading state */
-  .city-search-button:disabled {
-    color: rgba(255, 255, 255, 0.3);
-    cursor: not-allowed;
-  }
-  
-  /* Main navigation menu container */
-  .navigation-menu ul {
-    display: flex;
-    list-style: none;
-    align-items: center;
-  }
-  
-  /* Individual navigation menu items */
-  .navigation-menu li {
-    margin-left: 20px;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-  }
-  
-  /* Active and hover states for navigation items */
-  .navigation-menu li:hover,
-  .navigation-menu li.active {
-    opacity: 1;
-  }
-  
-  /* Special styling for user profile navigation item */
-  .navigation-menu li.user-profile {
-    background-color: #4caf50;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    opacity: 1;
-  }
-  
-  /* Hover state for user profile navigation item */
-  .navigation-menu li.user-profile:hover {
-    background-color: #45a049;
-  }
-  
-  /* Error notification styling - displays API errors and other issues */
-  .error-notification {
-    background-color: rgba(255, 0, 0, 0.2);
-    color: #ff6b6b;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  /* Loading indicator styling - shows during data fetching */
-  .loading-indicator {
-    background-color: rgba(0, 0, 255, 0.2);
-    color: #61dafb;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  /* Main content area - contains weather metrics and map */
-  .weather-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 20px;
-  }
-  
-  /* Location header with city name and air quality */
-  .location-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  /* Location name styling */
-  .location-header h2 {
-    font-size: 24px;
-  }
-  
-  /* Air Quality Index badge styling */
-  .air-quality-badge {
-    background-color: #ffd700;
-    color: #000;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-weight: bold;
-    font-size: 14px;
-  }
-  
-  /* Air quality metrics grid layout */
-  .air-quality-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-  
-  /* Individual air quality metric cards with hover effects */
-  .air-quality-card {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  /* Hover effect for air quality metric cards - adds elevation and highlighting */
-  .air-quality-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-  
-  /* Different accent colors for each air quality parameter on hover */
-  .air-quality-card:nth-child(1):hover {
-    border-left: 4px solid #ff6b6b;
-  } /* CO - Carbon Monoxide */
-  .air-quality-card:nth-child(2):hover {
-    border-left: 4px solid #4ecdc4;
-  } /* NO - Nitric Oxide */
-  .air-quality-card:nth-child(3):hover {
-    border-left: 4px solid #ffbe0b;
-  } /* NO2 - Nitrogen Dioxide */
-  .air-quality-card:nth-child(4):hover {
-    border-left: 4px solid #8ac926;
-  } /* O3 - Ozone */
-  .air-quality-card:nth-child(5):hover {
-    border-left: 4px solid #a786df;
-  } /* SO2 - Sulfur Dioxide */
-  .air-quality-card:nth-child(6):hover {
-    border-left: 4px solid #fb5607;
-  } /* PM2.5 - Fine Particulate Matter */
-  .air-quality-card:nth-child(7):hover {
-    border-left: 4px solid #3a86ff;
-  } /* PM10 - Coarse Particulate Matter */
-  .air-quality-card:nth-child(8):hover {
-    border-left: 4px solid #ff006e;
-  } /* NH3 - Ammonia */
-  
-  /* Glow effect on hover for air quality cards - adds visual interest */
-  .air-quality-card::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-  
-  /* Show glow effect on hover */
-  .air-quality-card:hover::after {
-    opacity: 1;
-  }
-  
-  /* Pollutant label styling */
-  .pollutant-label {
-    font-size: 14px;
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
-  }
-  
-  /* Pollutant value styling - emphasizes the measurement */
-  .pollutant-value {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 5px 0;
-    transition: transform 0.3s ease;
-  }
-  
-  /* Measurement unit styling */
-  .measurement-unit {
-    font-size: 12px;
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
-  }
-  
-  /* Enhanced styles on hover for better readability */
-  .air-quality-card:hover .pollutant-label {
-    opacity: 1;
-  }
-  
-  .air-quality-card:hover .pollutant-value {
-    transform: scale(1.05);
-  }
-  
-  .air-quality-card:hover .measurement-unit {
-    opacity: 0.8;
-  }
-  
-  /* Location map container */
-  .location-map-container {
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  /* Placeholder for map when actual map isn't available */
-  .location-map-placeholder {
-    background-color: #333;
-    width: 100%;
-    height: 100%;
-    min-height: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-  
-  /* City label overlay on map placeholder */
-  .location-map-city-label {
-    font-size: 24px;
-    font-weight: bold;
-    opacity: 0.7;
-  }
-  
-  /* Weather forecast section styling */
-  .forecast-section {
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    margin-top: 20px;
-  }
-  
-  /* Forecast section header */
-  .forecast-section h3 {
-    margin-bottom: 15px;
-    text-align: center;
-  }
-  
-  /* Container for forecast day cards */
-  .forecast-days-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    overflow-x: auto;
-    padding-bottom: 10px;
-  }
-  
-  /* Individual forecast day card */
+  /* Full-width forecast cards on mobile */
   .forecast-day-card {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 15px;
-    min-width: 120px;
-    text-align: center;
-    transition: all 0.3s ease;
+    width: 100%;
   }
-  
-  /* Hover effect for forecast day cards */
-  .forecast-day-card:hover {
-    transform: translateY(-5px);
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-  
-  /* Date display in forecast card */
-  .forecast-day-date {
-    font-size: 12px;
-    opacity: 0.7;
-  }
-  
-  /* Temperature display in forecast card */
-  .forecast-day-temperature {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 5px 0;
-  }
-  
-  /* Weather description in forecast card */
-  .forecast-day-description {
-    font-size: 12px;
-    opacity: 0.7;
-  }
-  
-  /* Application footer styling */
-  .dashboard-footer {
-    margin-top: 30px;
-    padding: 15px 0;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  /* Footer text styling */
-  .dashboard-footer p {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    font-size: 14px;
-    opacity: 0.8;
-  }
-  
-  /* Premium subscription footer note */
-  .premium-account-footer {
-    font-size: 12px;
-    opacity: 0.7;
-  }
-  
-  /* Logout link styling */
-  .account-logout {
-    color: #4caf50;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  
-  /* Hover state for logout link */
-  .account-logout:hover {
-    color: #45a049;
-  }
-  
-  /* Animated heart icon in footer */
-  .heart-animation {
-    color: #ff6b6b;
-    animation: heartbeat-pulse 1.5s ease infinite;
-  }
-  
-  /* Heart animation keyframes */
-  @keyframes heartbeat-pulse {
-    0% {
-      transform: scale(1);
-    }
-    25% {
-      transform: scale(1.2);
-    }
-    50% {
-      transform: scale(1);
-    }
-    75% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-  
-  /* Responsive layout adjustments for mobile devices */
-  @media (max-width: 768px) {
-    /* Stack main content in a single column on smaller screens */
-    .weather-content {
-      grid-template-columns: 1fr;
-    }
-    
-    /* Single column layout for metrics on smaller screens */
-    .air-quality-grid {
-      grid-template-columns: 1fr;
-    }
-    
-    /* Vertical navigation menu on mobile */
-    .navigation-menu ul {
-      flex-direction: column;
-      align-items: flex-end;
-    }
-    
-    /* Adjusted spacing for navigation items on mobile */
-    .navigation-menu li {
-      margin: 5px 0;
-    }
-    
-    /* Smaller logo on mobile for better space utilization */
-    .brand-logo-image {
-      height: 30px;
-    }
-    
-    /* Full-width search on mobile */
-    .city-search-container {
-      order: 3;
-      max-width: 100%;
-      width: 100%;
-    }
-    
-    /* Vertical forecast cards on mobile */
-    .forecast-days-container {
-      flex-direction: column;
-      gap: 15px;
-    }
-    
-    /* Full-width forecast cards on mobile */
-    .forecast-day-card {
-      width: 100%;
-    }
-  }
-  
-  
+}
