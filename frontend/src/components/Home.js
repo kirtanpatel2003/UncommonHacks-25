@@ -4,8 +4,7 @@ import { Heart, Search, Cloud, Droplets, Wind, ThermometerSun, RefreshCw, MapPin
 import "./home.css"
 import RandomQuote from "./randomQuote"
 
-// CHANGED: Import WeatherMap
-import WeatherMap from "./WeatherMap" // CHANGED
+import WeatherMap from "./WeatherMap"
 
 export default function WeatherDashboard() {
   const [weatherData, setWeatherData] = useState(null)

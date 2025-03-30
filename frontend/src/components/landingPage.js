@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { Heart } from 'lucide-react'
-import TemperatureGraph from "./temperatureGraph" // CHANGED: Our Recharts-based component
+import TemperatureGraph from "./temperatureGraph"
 import "./landingPage.css"
+import WeatherMap from "./WeatherMap"
 
 export default function WeatherLandingPage() {
   const [weather, setWeather] = useState(null)
@@ -12,15 +13,15 @@ export default function WeatherLandingPage() {
   const [showLogin, setShowLogin] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  
+
 
   const handleLogin = async () => {
     try {
       // const res = await axios.post("http://localhost:5012/api/login", { email, password })
       const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/login`, { email, password })
-  
+
       console.log("Response from backend:", res.data) // Add this log
-  
+
       if (res.data.success) {
         localStorage.setItem("email", res.data.email)
         localStorage.setItem("arduinoId", res.data.arduinoId)
@@ -43,7 +44,7 @@ export default function WeatherLandingPage() {
       fetchHourlyForecast(weather.coord.lat, weather.coord.lon)
     }
   }, [weather])
-  
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -87,7 +88,7 @@ export default function WeatherLandingPage() {
           const weatherRes = await axios.get(weatherUrl)
           const data = weatherRes.data
           console.log("Fetched weather data:", data)
-          
+
           // 2) Fetch Air Pollution
           const airQualityUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
           console.log("Air Quality API URL:", airQualityUrl)
@@ -151,7 +152,7 @@ export default function WeatherLandingPage() {
   return (
     <div className="app-container">
       <header className="app-header">
-      <div className="logo">
+        <div className="logo">
           <img src="/WEATHER.png" alt="WeatherGenie Logo" className="logo-image" />
         </div>
         <nav className="main-nav">
@@ -220,9 +221,19 @@ export default function WeatherLandingPage() {
           </div>
 
           <div className="map-container">
-            <div className="map-placeholder">
-              <div className="map-city-label">{weather.city}</div>
-            </div>
+            {/* CHANGED: Now showing the location map with a single marker */}
+            {weather.coord ? (
+              <div style={{ width: "100%", height: "400px" }}>
+                <WeatherMap
+                  lat={weather.coord.lat} // CHANGED
+                  lon={weather.coord.lon} // CHANGED
+                />
+              </div>
+            ) : (
+              <div className="map-placeholder">
+                <div className="map-city-label">{weather.city}</div>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -257,7 +268,7 @@ export default function WeatherLandingPage() {
           </div>
         </div>
       )}
-      
+
       <footer className="app-footer">
         <p>
           Made with <Heart className="heart-icon" size={18} /> by team WeatherGenie
