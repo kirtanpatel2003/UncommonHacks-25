@@ -15,11 +15,13 @@
 
 import "./App.css"
 import WeatherLandingPage from "./components/landingPage"
+import Home from "./components/home"
 
 function App() {
   return (
     <div className="App">
       <WeatherLandingPage />
+      <Home />
     </div>
   )
 }
