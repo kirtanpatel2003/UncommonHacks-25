@@ -1,4 +1,3 @@
-// temperatureGraph.jsx
 import React, { useState } from 'react';
 import {
   LineChart,
@@ -23,10 +22,6 @@ const TemperatureGraph = ({ data }) => {
     return <p>⚠️ No temperature data available.</p>;
   }
 
-  // For the old code, you might be doing dt_txt splits, etc.
-  // We'll assume your data items look like: { dt_txt, main: { temp: <Kelvin> } }
-  // If you’re fetching in Kelvin, keep the conversions. If you’re fetching in metric,
-  // remove the conversions or adapt them.
   const minTemp = Math.min(...data.map(entry => 
     unit === "C"
       ? kelvinToCelsius(entry.main?.temp)
@@ -39,16 +34,26 @@ const TemperatureGraph = ({ data }) => {
   ));
 
   // Build chart data
-  const chartData = data.map(entry => ({
-    // Example: split dt_txt into [date, time]
-    // "2023-09-01 15:00:00" => "15:00:00"
-    time: entry.dt_txt ? entry.dt_txt.split(' ')[1] : "N/A",
-    Temperature: parseFloat(
-      unit === "C"
-        ? kelvinToCelsius(entry.main?.temp)
-        : kelvinToFahrenheit(entry.main?.temp)
-    )
-  }));
+  const chartData = data
+    .filter(entry => {
+      const hour = new Date(entry.dt_txt).getHours();
+      return [0, 7, 12, 17].includes(hour);
+    })
+    .map(entry => {
+      const dateObj = new Date(entry.dt_txt);
+      const datePart = `${(dateObj.getMonth() + 1).toString().padStart(2, "0")}/${dateObj.getDate().toString().padStart(2, "0")}`;
+      const timePart = dateObj.toLocaleTimeString([], { hour: 'numeric', hour12: true });
+
+      return {
+        time: `${datePart} ${timePart}`,
+        date: datePart,
+        Temperature: parseFloat(
+          unit === "C"
+            ? kelvinToCelsius(entry.main?.temp)
+            : kelvinToFahrenheit(entry.main?.temp)
+        )
+      };
+    });
 
   return (
     <div>
@@ -71,7 +76,9 @@ const TemperatureGraph = ({ data }) => {
               position: "insideLeft",
             }}
           />
-          <Tooltip />
+          <Tooltip
+            formatter={(value) => `${value}°${unit}`}
+          />
           <Legend />
           <Line type="monotone" dataKey="Temperature" stroke="#ff4d4d" />
         </LineChart>
