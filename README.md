@@ -55,15 +55,15 @@ Ensure you have the following installed:
 
 ### Cloning the Repository
 Clone the WeatherGenie repository to your local machine:
-```bash
-git clone https://github.com/yourusername/weathergenie.us.git
+```
+git clone https://github.com/kirtanpatel2003/weathergenie.us.git
 cd weathergenie.us
 ```
 ### Installing Dependencies
 
 From the project root, install dependencies for both the back-end and front-end by running:
 
-```bash
+```
 # For the back-end
 cd backend
 npm install
