@@ -1,0 +1,67 @@
+body {
+    background-color: black;
+    color: white;  /* Set text color to white for better visibility */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Add a wrapper for multiple graphs */
+.graph-multi-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 20px;
+}
+
+/* Style the graph container */
+.graph-container {
+  padding: 20px;
+  text-align: center;
+  background-color: #111;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Ensure each graph header stands out */
+.graph-container h4 {
+  margin-bottom: 16px;
+  color: #f5f5f5;
+  font-size: 1.2rem;
+}
+
+/* Style for the Recharts graph */
+.recharts-wrapper {
+    background-color: black !important;  /* Set background of graph to black */
+}
+
+/* Set the axis labels, grid, and lines to be white */
+.recharts-cartesian-axis-line, 
+.recharts-cartesian-grid-line, 
+.recharts-xAxis-tick, 
+.recharts-yAxis-tick {
+    stroke: white !important;  /* Set axis lines and grid lines to white */
+}
+
+.recharts-xAxis text, 
+.recharts-yAxis text {
+    fill: white !important;  /* Set text color for axis labels to white */
+}
+
+.recharts-line {
+    stroke-width: 3px !important;  /* Make the line bold */
+}
+
+/* Styling for the legend to be white */
+.recharts-legend-item-text {
+    fill: white !important;
+}
+
+/* Customize the temperature and humidity lines with blue and green colors */
+.recharts-line-temperature {
+    stroke: blue !important;  /* Temperature line color */
+}
+
+.recharts-line-humidity {
+    stroke: green !important;  /* Humidity line color */
+}

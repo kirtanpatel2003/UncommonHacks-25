@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import Graph from "./Graph"
 import axios from "axios"
 import { Heart, Search, Cloud, Droplets, Wind, ThermometerSun, RefreshCw, MapPin } from 'lucide-react'
 import "./home.css"
@@ -411,6 +412,12 @@ export default function WeatherDashboard() {
       {activeTab === "device" && (
         <div className="device-graph-wrapper">
           <DeviceGraph />
+        </div>
+      )}
+      
+      {activeTab === "graphs" && weatherData?.coord && (
+        <div className="graph-tab-wrapper">
+          <Graph lat={weatherData.coord.lat} lon={weatherData.coord.lon} />
         </div>
       )}
 
