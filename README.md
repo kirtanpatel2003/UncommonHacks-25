@@ -71,6 +71,7 @@ npm install
 # For the front-end
 cd ../frontend
 npm install
+``
 
 ## Additional Configuration
 - **API Keys:** Securely configure your API keys for OpenWeather and any other external services in your environment variables or configuration files.
