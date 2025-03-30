@@ -1,28 +1,13 @@
-// import React from "react";
-// import "./App.css";
-// import WeatherLandingPage from "./components/landingPage";
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <WeatherLandingPage />
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-import "./App.css"
-import WeatherLandingPage from "./components/landingPage"
+import React from 'react';
+import LandingPage from './components/landingPage';
+import LandingPage from './components/Success';
 
 function App() {
   return (
     <div className="App">
-      <WeatherLandingPage />
+      <LandingPage />
     </div>
-  )
+  );
 }
 
-export default App
-
+export default App;
