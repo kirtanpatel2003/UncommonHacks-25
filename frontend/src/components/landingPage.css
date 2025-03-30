@@ -1,282 +1,367 @@
 /* Base styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-      "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header styles */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Updated logo styles */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 150px; /* Adjust based on your preference */
+  width: auto;
+}
+
+.main-nav ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+.main-nav li {
+  margin-left: 20px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.main-nav li:hover,
+.main-nav li.active {
+  opacity: 1;
+}
+
+.main-nav li.sign-in-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  opacity: 1;
+}
+
+.main-nav li.sign-in-btn:hover {
+  background-color: #45a049;
+}
+
+/* Error and loading messages */
+.error-message {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: #ff6b6b;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.loading-message {
+  background-color: rgba(0, 0, 255, 0.2);
+  color: #61dafb;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Main content */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* City header */
+.city-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.city-header h2 {
+  font-size: 24px;
+}
+
+.aqi-badge {
+  background-color: #ffd700;
+  color: #000;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Metrics grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* MODIFIED: Updated metric card with hover effects */
+.metric-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease; /* ADDED: Smooth transition for hover effects */
+  cursor: pointer; /* ADDED: Change cursor to pointer on hover */
+  position: relative; /* ADDED: For positioning pseudo-elements */
+  overflow: hidden; /* ADDED: To contain the glow effect */
+}
+
+/* ADDED: Hover effect for metric cards */
+.metric-card:hover {
+  transform: translateY(-5px); /* ADDED: Slight lift effect */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* ADDED: Shadow for depth */
+  background-color: rgba(255, 255, 255, 0.15); /* ADDED: Slightly lighter background */
+}
+
+/* ADDED: Different hover colors based on the metric type */
+.metric-card:nth-child(1):hover {
+  border-left: 4px solid #ff6b6b;
+} /* CO */
+.metric-card:nth-child(2):hover {
+  border-left: 4px solid #4ecdc4;
+} /* NO */
+.metric-card:nth-child(3):hover {
+  border-left: 4px solid #ffbe0b;
+} /* NO2 */
+.metric-card:nth-child(4):hover {
+  border-left: 4px solid #8ac926;
+} /* O3 */
+.metric-card:nth-child(5):hover {
+  border-left: 4px solid #a786df;
+} /* SO2 */
+.metric-card:nth-child(6):hover {
+  border-left: 4px solid #fb5607;
+} /* PM2.5 */
+.metric-card:nth-child(7):hover {
+  border-left: 4px solid #3a86ff;
+} /* PM10 */
+.metric-card:nth-child(8):hover {
+  border-left: 4px solid #ff006e;
+} /* NH3 */
+
+/* ADDED: Glow effect on hover */
+.metric-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.metric-card:hover::after {
+  opacity: 1;
+}
+
+/* MODIFIED: Enhanced label, value and unit styles */
+.metric-label {
+  font-size: 14px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease; /* ADDED: Smooth transition */
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 5px 0;
+  transition: transform 0.3s ease; /* ADDED: Smooth transition */
+}
+
+.metric-unit {
+  font-size: 12px;
+  opacity: 0.5;
+  transition: opacity 0.3s ease; /* ADDED: Smooth transition */
+}
+
+/* ADDED: Change styles on hover */
+.metric-card:hover .metric-label {
+  opacity: 1;
+}
+
+.metric-card:hover .metric-value {
+  transform: scale(1.05); /* ADDED: Slightly enlarge the value */
+}
+
+.metric-card:hover .metric-unit {
+  opacity: 0.8;
+}
+
+/* Map container */
+.map-container {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.map-placeholder {
+  background-color: #333;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.map-city-label {
+  font-size: 24px;
+  font-weight: bold;
+  opacity: 0.7;
+}
+
+/* Temperature Map Container */
+.temperature-map-container {
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.temperature-map-placeholder {
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.temperature-map-placeholder h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.temperature-map-placeholder p {
+  opacity: 0.7;
+}
+
+/* Footer styles */
+.app-footer {
+  margin-top: 30px;
+  padding: 15px 0;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.app-footer p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Heart icon animation */
+.heart-icon {
+  color: #ff6b6b;
+  animation: heartbeat 1.5s ease infinite;
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
   }
-  
-  body {
-    background-color: #000;
-    color: #fff;
+  25% {
+    transform: scale(1.2);
   }
-  
-  .app-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  50% {
+    transform: scale(1);
   }
-  
-  /* Header styles */
-  .app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  75% {
+    transform: scale(1.2);
   }
-  
-  .logo {
-    font-size: 24px;
-    font-weight: bold;
+  100% {
+    transform: scale(1);
   }
-  
-  .main-nav ul {
-    display: flex;
-    list-style: none;
-    align-items: center;
-  }
-  
-  .main-nav li {
-    margin-left: 20px;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-  }
-  
-  .main-nav li:hover,
-  .main-nav li.active {
-    opacity: 1;
-  }
-  
-  .main-nav li.sign-in-btn {
-    background-color: #4caf50;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    opacity: 1;
-  }
-  
-  .main-nav li.sign-in-btn:hover {
-    background-color: #45a049;
-  }
-  
-  /* Error and loading messages */
-  .error-message {
-    background-color: rgba(255, 0, 0, 0.2);
-    color: #ff6b6b;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .loading-message {
-    background-color: rgba(0, 0, 255, 0.2);
-    color: #61dafb;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  /* Main content */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .main-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 20px;
+    grid-template-columns: 1fr;
   }
-  
-  /* City header */
-  .city-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .city-header h2 {
-    font-size: 24px;
-  }
-  
-  .aqi-badge {
-    background-color: #ffd700;
-    color: #000;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-weight: bold;
-    font-size: 14px;
-  }
-  
-  /* Metrics grid */
+
   .metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: 1fr;
   }
-  
-  .metric-card {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 15px;
-    display: flex;
+
+  .main-nav ul {
     flex-direction: column;
+    align-items: flex-end;
   }
-  
-  .metric-label {
-    font-size: 14px;
-    opacity: 0.7;
-  }
-  
-  .metric-value {
-    font-size: 24px;
-    font-weight: bold;
+
+  .main-nav li {
     margin: 5px 0;
   }
-  
-  .metric-unit {
-    font-size: 12px;
-    opacity: 0.5;
+
+  .logo-image {
+    height: 30px; /* Smaller logo on mobile */
   }
-  
-  /* Map container */
-  .map-container {
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  .map-placeholder {
-    background-color: #333;
-    width: 100%;
-    height: 100%;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-  
-  .map-city-label {
-    font-size: 24px;
-    font-weight: bold;
-    opacity: 0.7;
-  }
-  
-  /* Tabs - MODIFIED to only show Temperature tab */
-  .tabs-container {
-    display: flex;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .tab {
-    padding: 10px 20px;
-    opacity: 1;
-    position: relative;
-  }
-  
-  .tab.active::after {
-    content: "";
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #fff;
-  }
-  
-  /* Temperature Map Container */
-  .temperature-map-container {
-    margin-top: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-    flex-grow: 1;
-  }
-  
-  .temperature-map-placeholder {
-    background-color: rgba(0, 0, 0, 0.3);
-    width: 100%;
-    height: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-  }
-  
-  .temperature-map-placeholder h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .temperature-map-placeholder p {
-    opacity: 0.7;
-  }
-  
-  /* Added footer styles */
-  .app-footer {
-    margin-top: 30px;
-    padding: 15px 0;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .app-footer p {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    font-size: 14px;
-    opacity: 0.8;
-  }
-  
-  /* Heart icon animation */
-  .heart-icon {
-    color: #ff6b6b;
-    animation: heartbeat 1.5s ease infinite;
-  }
-  
-  @keyframes heartbeat {
-    0% {
-      transform: scale(1);
-    }
-    25% {
-      transform: scale(1.2);
-    }
-    50% {
-      transform: scale(1);
-    }
-    75% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .main-content {
-      grid-template-columns: 1fr;
-    }
-  
-    .metrics-grid {
-      grid-template-columns: 1fr;
-    }
-  
-    .main-nav ul {
-      flex-direction: column;
-      align-items: flex-end;
-    }
-  
-    .main-nav li {
-      margin: 5px 0;
-    }
-  }
-  
-  
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.login-popup {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 300px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
