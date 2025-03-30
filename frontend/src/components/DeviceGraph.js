@@ -20,19 +20,48 @@ export default function DeviceGraph() {
   }, [])
 
   return (
-    <div style={{ width: "100%", height: 400 }}>
-      <ResponsiveContainer>
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="TimeStamp" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="AQI" stroke="#8884d8" />
-          <Line type="monotone" dataKey="TempC" stroke="#82ca9d" />
-          <Line type="monotone" dataKey="Hum%" stroke="#ff7300" />
-        </LineChart>
-      </ResponsiveContainer>
+    <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "2rem" }}>
+      <div style={{ width: "100%", height: 300 }}>
+        <h4>AQI</h4>
+        <ResponsiveContainer>
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="TimeStamp" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="AQI" stroke="#8884d8" />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div style={{ width: "100%", height: 300 }}>
+        <h4>Temperature (°C)</h4>
+        <ResponsiveContainer>
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="TimeStamp" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="TempC" stroke="#82ca9d" />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div style={{ width: "100%", height: 300 }}>
+        <h4>Humidity (%)</h4>
+        <ResponsiveContainer>
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="TimeStamp" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="Hum%" stroke="#ff7300" />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   )
 }
