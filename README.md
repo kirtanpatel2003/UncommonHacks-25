@@ -58,7 +58,7 @@ Clone the WeatherGenie repository to your local machine:
 ```bash
 git clone https://github.com/yourusername/weathergenie.us.git
 cd weathergenie.us
-
+```
 ### Installing Dependencies
 
 From the project root, install dependencies for both the back-end and front-end by running:
@@ -71,7 +71,7 @@ npm install
 # For the front-end
 cd ../frontend
 npm install
-``
+```
 
 ## Additional Configuration
 - **API Keys:** Securely configure your API keys for OpenWeather and any other external services in your environment variables or configuration files.
@@ -82,7 +82,14 @@ npm install
 ## Contributing
 Contributions are welcome! If you have ideas or improvements, please open an issue or submit a pull request. For major changes, please discuss them in an issue first to ensure they align with the project goals.
 
+## Contributors
+ - Mihir Thakkar
+ - Jash Maisuria
+ - Kirtan Patel
+ - Dev Shah
+
 ## License
 © 2025 WeatherGenie Team. All rights reserved.  
 No part of this documentation, including text, images, and software, may be reproduced, distributed, or transmitted without prior written permission, except in the case of brief quotations for critical reviews or other noncommercial uses permitted by copyright law.
+
 
