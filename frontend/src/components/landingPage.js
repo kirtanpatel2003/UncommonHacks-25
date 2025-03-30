@@ -9,17 +9,60 @@ export default function WeatherLandingPage() {
   const [hourlyData, setHourlyData] = useState([]) // CHANGED: Store forecast data here
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [showLogin, setShowLogin] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  
+
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post("http://localhost:5012/api/login", { email, password })
+  
+      console.log("Response from backend:", res.data) // Add this log
+  
+      if (res.data.success) {
+        localStorage.setItem("email", res.data.email)
+        localStorage.setItem("arduinoId", res.data.arduinoId)
+        window.location.href = "/home"
+      } else {
+        alert("Invalid credentials") // Only show this if success is false
+      }
+    } catch (err) {
+      console.error("Error during login:", err)
+      alert("Login failed due to a network or server error")
+    }
+  }
 
   useEffect(() => {
     fetchWeather()
   }, [])
 
-  // CHANGED: Once we have weather coords, fetch the 3-hour forecast
   useEffect(() => {
     if (weather?.coord) {
       fetchHourlyForecast(weather.coord.lat, weather.coord.lon)
     }
   }, [weather])
+  
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          // Success logic here
+          console.log("Latitude:", position.coords.latitude)
+          console.log("Longitude:", position.coords.longitude)
+        },
+        error => {
+          if (error.code === error.PERMISSION_DENIED) {
+            console.warn("User denied location access.")
+          } else {
+            console.error("Geolocation error:", error.message)
+          }
+        }
+      )
+    } else {
+      console.error("Geolocation is not supported by this browser.")
+    }
+  }, [])
 
   const fetchWeather = async () => {
     console.log("fetchWeather called")
@@ -114,7 +157,7 @@ export default function WeatherLandingPage() {
         <nav className="main-nav">
           <ul>
             <li>Learn More</li>
-            <li className="sign-in-btn">Sign In</li>
+            <li className="sign-in-btn" onClick={() => setShowLogin(true)}>Sign In</li>
           </ul>
         </nav>
       </header>
@@ -189,6 +232,30 @@ export default function WeatherLandingPage() {
       {hourlyData.length > 0 && (
         <div className="history-chart-container">
           <TemperatureGraph data={hourlyData} />
+        </div>
+      )}
+
+      {showLogin && (
+        <div className="popup-overlay">
+          <div className="login-popup">
+            <h3>Sign In</h3>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <div className="popup-buttons">
+              <button onClick={handleLogin}>Login</button>
+              <button onClick={() => setShowLogin(false)}>Cancel</button>
+            </div>
+          </div>
         </div>
       )}
       

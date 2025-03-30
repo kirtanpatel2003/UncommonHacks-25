@@ -1,32 +1,28 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-require('dotenv').config();
+const express = require('express')
+const cors = require('cors')
+const mongoose = require('mongoose')
+require('dotenv').config()
 
-console.log("MONGO_URI:", process.env.MONGO_URI);
-console.log("PORT:", process.env.PORT);
-
-const app = express();
+const app = express()
 
 app.use(cors({
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-  }));
-app.use(express.json());
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST'],
+  credentials: true
+}))
 
-app.get('/', (req, res) => {
-  res.send('API running ✅');
-});
+app.use(express.json())
 
-const PORT = process.env.PORT || 5012;
-
+// Connect MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log('MongoDB connected ✅');
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-})
-.catch((err) => console.error(err));
+  useUnifiedTopology: true
+}).then(() => console.log('MongoDB connected'))
+
+// Mount routes
+const authRoutes = require('./routes/auth')
+app.use('/api', authRoutes)
+
+app.listen(process.env.PORT || 5012, () =>
+  console.log('Server running on port', process.env.PORT || 5012)
+)
