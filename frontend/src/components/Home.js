@@ -2,8 +2,10 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { Heart, Search, Cloud, Droplets, Wind, ThermometerSun, RefreshCw, MapPin } from 'lucide-react'
 import "./home.css"
-import DeviceGraph from "./DeviceGraph"
 import RandomQuote from "./randomQuote"
+
+// CHANGED: Import WeatherMap
+import WeatherMap from "./WeatherMap" // CHANGED
 
 export default function WeatherDashboard() {
   const [weatherData, setWeatherData] = useState(null)
@@ -17,7 +19,6 @@ export default function WeatherDashboard() {
     fetchWeatherByGeolocation()
   }, [])
 
-  // Retrieves user's geolocation and fetches weather data for that location
   const fetchWeatherByGeolocation = async () => {
     console.log("fetchWeatherByGeolocation called")
     setIsLoadingData(true)
@@ -43,7 +44,6 @@ export default function WeatherDashboard() {
     )
   }
 
-  // Fetches comprehensive weather, air quality, and forecast data using geographic coordinates
   const fetchWeatherByCoordinates = async (latitude, longitude) => {
     try {
       const weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`
@@ -53,22 +53,17 @@ export default function WeatherDashboard() {
       const weatherResponseData = weatherResponse.data
       console.log("Fetched weather data:", weatherResponseData)
 
-      // Construct the Air Pollution API URL
+      // Air Pollution
       const airQualityApiUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
       console.log("Air Quality API URL:", airQualityApiUrl)
-
-      // Fetch the Air Pollution data
       const airQualityResponse = await axios.get(airQualityApiUrl)
       const airQualityResponseData = airQualityResponse.data
       console.log("Fetched air quality data:", airQualityResponseData)
 
-      // Extract AQI value (1..5) from the response
       const airQualityIndex = airQualityResponseData?.list?.[0]?.main?.aqi ?? 1
-
-      // Extract the relevant air quality components
       const airQualityComponents = airQualityResponseData?.list?.[0]?.components || {}
 
-      // For premium users, we'll add forecast data
+      // Forecast
       const forecastApiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`
       const forecastResponse = await axios.get(forecastApiUrl)
       const forecastResponseData = forecastResponse.data
@@ -96,6 +91,8 @@ export default function WeatherDashboard() {
           nh3: { value: airQualityComponents.nh3, unit: "μg/m³" },
         },
         forecast: forecastResponseData.list.slice(0, 5),
+        // CHANGED: store coords for map usage
+        coord: { lat: latitude, lon: longitude } // CHANGED
       })
     } catch (error) {
       console.error("Weather data fetch error:", error)
@@ -105,10 +102,8 @@ export default function WeatherDashboard() {
     }
   }
 
-  // Searches for weather data based on city name entered by user
   const fetchWeatherByCity = async (cityName) => {
     if (!cityName) return
-
     setIsLoadingData(true)
     setErrorMessage(null)
 
@@ -120,7 +115,6 @@ export default function WeatherDashboard() {
       const weatherResponseData = weatherResponse.data
       console.log("Fetched weather data:", weatherResponseData)
 
-      // Get coordinates for air quality and forecast
       const { lat, lon } = weatherResponseData.coord
       await fetchWeatherByCoordinates(lat, lon)
     } catch (error) {
@@ -130,53 +124,45 @@ export default function WeatherDashboard() {
     }
   }
 
-  // Handles form submission for city search
   const handleSearchSubmit = (e) => {
     e.preventDefault()
     fetchWeatherByCity(citySearchQuery)
   }
 
-  // Handles Enter key press in the search input field
   const handleSearchKeyPress = (e) => {
     if (e.key === "Enter") {
       fetchWeatherByCity(citySearchQuery)
     }
   }
 
-  // Get AQI description based on index
   const getAqiDescription = (index) => {
-    const descriptions = [
-      "Good",
-      "Fair",
-      "Moderate",
-      "Poor",
-      "Very Poor"
-    ]
+    const descriptions = ["Good", "Fair", "Moderate", "Poor", "Very Poor"]
     return descriptions[index - 1] || "Unknown"
   }
 
-  // Get AQI color based on index
   const getAqiColor = (index) => {
     const colors = [
       "#4caf50", // Good - Green
       "#8bc34a", // Fair - Light Green
       "#ffc107", // Moderate - Yellow
       "#ff9800", // Poor - Orange
-      "#f44336"  // Very Poor - Red
+      "#f44336"// Very Poor - Red
     ]
-    return colors[index - 1] || "#9e9e9e" // Default gray
+    return colors[index - 1] || "#9e9e9e"
   }
 
-  // Format date for forecast
   const formatForecastDate = (timestamp) => {
     const date = new Date(timestamp * 1000)
-    return date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })
+    return date.toLocaleDateString(undefined, {
+      weekday: 'short', month: 'short', day: 'numeric'
+    })
   }
 
-  // Format time for forecast
   const formatForecastTime = (timestamp) => {
     const date = new Date(timestamp * 1000)
-    return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+    return date.toLocaleTimeString(undefined, {
+      hour: '2-digit', minute: '2-digit'
+    })
   }
 
   return (
@@ -200,20 +186,20 @@ export default function WeatherDashboard() {
         </div>
         <nav className="navigation-menu">
           <ul>
-            <li 
-              className={activeTab === "dashboard" ? "active" : ""} 
+            <li
+              className={activeTab === "dashboard" ? "active" : ""}
               onClick={() => setActiveTab("dashboard")}
             >
               Dashboard
             </li>
-            <li 
-              className={activeTab === "graphs" ? "active" : ""} 
+            <li
+              className={activeTab === "graphs" ? "active" : ""}
               onClick={() => setActiveTab("graphs")}
             >
               Graphs
             </li>
-            <li 
-              className={activeTab === "device" ? "active" : ""} 
+            <li
+              className={activeTab === "device" ? "active" : ""}
               onClick={() => setActiveTab("device")}
             >
               Device
@@ -239,75 +225,87 @@ export default function WeatherDashboard() {
 
       {weatherData && (
         <>
-<div className="current-weather-summary">
-  <div className="current-weather-card">
-    <div className="current-weather-header">
-      <div className="location-info">
-        <MapPin size={20} className="location-icon" />
-        <h1 className="location-name">{weatherData.city}, {weatherData.country}</h1>
-      </div>
-      <div className="weather-description-badge">
-        {weatherData.description}
-      </div>
-    </div>
-    
-    <div className="current-weather-content">
-      <div className="weather-primary-info">
-        <img 
-          src={`https://openweathermap.org/img/wn/${weatherData.icon}@4x.png`} 
-          alt={weatherData.description} 
-          className="weather-icon"
-        />
-        <div className="temperature-container">
-          <span className="temperature-value">{Math.round(weatherData.temperature)}°C</span>
-          <span className="feels-like">Feels like {Math.round(weatherData.feelsLike)}°C</span>
-        </div>
-      </div>
-      
-      <div className="weather-metrics">
-        <div className="weather-metric">
-          <Droplets size={18} />
-          <div className="metric-details">
-            <span className="metric-value">{weatherData.humidity}%</span>
-            <span className="metric-label">Humidity</span>
+          <div className="current-weather-summary">
+            <div className="current-weather-card">
+              <div className="current-weather-header">
+                <div className="location-info">
+                  <MapPin size={20} className="location-icon" />
+                  <h1 className="location-name">
+                    {weatherData.city}, {weatherData.country}
+                  </h1>
+                </div>
+                <div className="weather-description-badge">
+                  {weatherData.description}
+                </div>
+              </div>
+
+              <div className="current-weather-content">
+                <div className="weather-primary-info">
+                  <img
+                    src={`https://openweathermap.org/img/wn/${weatherData.icon}@4x.png`}
+                    alt={weatherData.description}
+                    className="weather-icon"
+                  />
+                  <div className="temperature-container">
+                    <span className="temperature-value">
+                      {Math.round(weatherData.temperature)}°C
+                    </span>
+                    <span className="feels-like">
+                      Feels like {Math.round(weatherData.feelsLike)}°C
+                    </span>
+                  </div>
+                </div>
+
+                <div className="weather-metrics">
+                  <div className="weather-metric">
+                    <Droplets size={18} />
+                    <div className="metric-details">
+                      <span className="metric-value">
+                        {weatherData.humidity}%
+                      </span>
+                      <span className="metric-label">Humidity</span>
+                    </div>
+                  </div>
+
+                  <div className="weather-metric">
+                    <Wind size={18} />
+                    <div className="metric-details">
+                      <span className="metric-value">
+                        {weatherData.windSpeed.toFixed(2)}
+                      </span>
+                      <span className="metric-label">m/s Wind</span>
+                    </div>
+                  </div>
+
+                  <div className="weather-metric">
+                    <ThermometerSun size={18} />
+                    <div className="metric-details">
+                      <span className="metric-value">
+                        {weatherData.pressure}
+                      </span>
+                      <span className="metric-label">hPa</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="current-weather-footer">
+                <button className="refresh-button" onClick={fetchWeatherByGeolocation}>
+                  <RefreshCw size={16} /> Refresh
+                </button>
+                <span className="last-updated">
+                  Updated: {new Date().toLocaleTimeString()}
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
-        
-        <div className="weather-metric">
-          <Wind size={18} />
-          <div className="metric-details">
-            <span className="metric-value">{weatherData.windSpeed.toFixed(2)}</span>
-            <span className="metric-label">m/s Wind</span>
-          </div>
-        </div>
-        
-        <div className="weather-metric">
-          <ThermometerSun size={18} />
-          <div className="metric-details">
-            <span className="metric-value">{weatherData.pressure}</span>
-            <span className="metric-label">hPa</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div className="current-weather-footer">
-      <button className="refresh-button" onClick={fetchWeatherByGeolocation}>
-        <RefreshCw size={16} /> Refresh
-      </button>
-      <span className="last-updated">
-        Updated: {new Date().toLocaleTimeString()}
-      </span>
-    </div>
-  </div>
-</div>
 
           <div className="weather-content">
             <div className="air-quality-metrics">
               <div className="location-header">
                 <h2>Air Quality</h2>
-                <div 
-                  className="air-quality-badge" 
+                <div
+                  className="air-quality-badge"
                   style={{ backgroundColor: getAqiColor(weatherData.aqi) }}
                 >
                   AQI: {weatherData.aqi}/5 - {getAqiDescription(weatherData.aqi)}
@@ -359,17 +357,21 @@ export default function WeatherDashboard() {
             </div>
 
             <div className="location-map-container">
-              <div className="location-map-placeholder">
-                <Cloud size={48} className="map-icon" />
-                <div className="location-map-city-label">{weatherData.city}</div>
-                <p className="map-description">Interactive map coming soon</p>
-              </div>
+              {weatherData.coord && (
+                <div style={{ width: "100%", height: "400px" }}>
+                  <WeatherMap
+                    lat={weatherData.coord.lat}// CHANGED
+                    lon={weatherData.coord.lon}// CHANGED
+                    apiKey={process.env.REACT_APP_WEATHER_API_KEY} // CHANGED
+                  />
+                </div>
+              )}
             </div>
           </div>
 
           <div className="forecast-toggle">
-            <button 
-              className="forecast-toggle-button" 
+            <button
+              className="forecast-toggle-button"
               onClick={() => setShowForecast(!showForecast)}
             >
               {showForecast ? "Hide Forecast" : "Show 3-Hour Forecast"}
@@ -382,15 +384,23 @@ export default function WeatherDashboard() {
               <div className="forecast-days-container">
                 {weatherData.forecast.map((item, index) => (
                   <div className="forecast-day-card" key={index}>
-                    <div className="forecast-day-date">{formatForecastDate(item.dt)}</div>
-                    <div className="forecast-day-time">{formatForecastTime(item.dt)}</div>
-                    <img 
-                      src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`} 
-                      alt={item.weather[0].description} 
+                    <div className="forecast-day-date">
+                      {formatForecastDate(item.dt)}
+                    </div>
+                    <div className="forecast-day-time">
+                      {formatForecastTime(item.dt)}
+                    </div>
+                    <img
+                      src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
+                      alt={item.weather[0].description}
                       className="forecast-icon"
                     />
-                    <div className="forecast-day-temperature">{Math.round(item.main.temp)}°C</div>
-                    <div className="forecast-day-description">{item.weather[0].description}</div>
+                    <div className="forecast-day-temperature">
+                      {Math.round(item.main.temp)}°C
+                    </div>
+                    <div className="forecast-day-description">
+                      {item.weather[0].description}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -399,18 +409,11 @@ export default function WeatherDashboard() {
         </>
       )}
 
-      {activeTab === "device" && (
-        <div className="device-graph-wrapper">
-          <DeviceGraph />
-        </div>
-      )}
-
       <footer className="dashboard-footer">
         <RandomQuote />
         <p>
           Made with <Heart className="heart-animation" size={18} /> by team WeatherGenie
         </p>
-        
       </footer>
     </div>
   )

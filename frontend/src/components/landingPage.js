@@ -48,7 +48,6 @@ export default function WeatherLandingPage() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
-          // Success logic here
           console.log("Latitude:", position.coords.latitude)
           console.log("Longitude:", position.coords.longitude)
         },
@@ -157,7 +156,6 @@ export default function WeatherLandingPage() {
         </div>
         <nav className="main-nav">
           <ul>
-            <li>Learn More</li>
             <li className="sign-in-btn" onClick={() => setShowLogin(true)}>Sign In</li>
           </ul>
         </nav>
